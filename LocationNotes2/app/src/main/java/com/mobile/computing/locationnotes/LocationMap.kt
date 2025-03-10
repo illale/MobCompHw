@@ -59,7 +59,7 @@ fun Map(
             myLocationButtonEnabled = true
         )
     ) }
-    val properties by remember { mutableStateOf(MapProperties(mapType = MapType.NORMAL, isMyLocationEnabled = true)) }
+    var properties by remember { mutableStateOf(MapProperties(mapType = MapType.NORMAL, isMyLocationEnabled = false)) }
     var userLocation by remember {
         mutableStateOf(LatLng(10.0, 10.0))
     }
@@ -73,6 +73,7 @@ fun Map(
     val clickPosition = remember { mutableStateOf(LatLng(0.0, 0.0)) }
 
     getCurrentLocation(context, activity) { location ->
+        properties = MapProperties(mapType = MapType.NORMAL, isMyLocationEnabled = true)
         userLocation = location
         zoomLevel = cameraPositionState.position.zoom
         cameraPositionState.position = CameraPosition.fromLatLngZoom(location, zoomLevel)
@@ -150,13 +151,13 @@ fun MapMarker(markerNote: MarkerNote) {
             return@MarkerInfoWindowContent true
         },
         content = {
-            NoteCard(markerNote.name, markerNote.note, markerNote.lat, markerNote.lon)
+            NoteCard(markerNote)
         }
     )
 }
 
 @Composable
-fun NoteCard(name: String, content: String, latitude: Double, longitude: Double) {
+fun NoteCard(markerNote: MarkerNote) {
     Card(
         shape = RoundedCornerShape(12.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
@@ -170,14 +171,14 @@ fun NoteCard(name: String, content: String, latitude: Double, longitude: Double)
                 .padding(8.dp)
         ) {
             Text(
-                text = "%.2f° N, %.2f° W".format(Locale.US, latitude, longitude),
+                text = "%.2f° N, %.2f° W".format(Locale.US, markerNote.lat, markerNote.lon),
                 fontSize = 12.sp,
                 color = Color.Gray,
                 textAlign = TextAlign.Start
             )
 
             Text(
-                text = name,
+                text = markerNote.name,
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Bold,
                 color = Color.Black,
@@ -185,7 +186,7 @@ fun NoteCard(name: String, content: String, latitude: Double, longitude: Double)
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
-                text = content,
+                text = markerNote.note,
                 fontSize = 14.sp,
                 color = Color.DarkGray,
                 textAlign = TextAlign.Start

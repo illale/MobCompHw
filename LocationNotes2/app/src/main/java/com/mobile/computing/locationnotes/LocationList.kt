@@ -1,7 +1,5 @@
 package com.mobile.computing.locationnotes
 
-import android.util.Log
-import androidx.collection.mutableObjectListOf
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -47,15 +45,11 @@ fun LocationList(
             items(notesList) { note ->
                 LocationCard(
                     note,
-                    markerDatabase,
-                    {
-
-                    },
-                    {
-                        Log.d("DELETE", "DELETE THIS NOTE")
-                        notesList.remove(note)
-                        markerDatabase.markerDao().deleteMarker(note)
-                    })
+                    markerDatabase
+                ) {
+                    notesList.remove(note)
+                    markerDatabase.markerDao().deleteMarker(note)
+                }
             }
         }
     }
@@ -67,7 +61,6 @@ fun LocationList(
 fun LocationCard(
     note: MarkerNote,
     markerDatabase: MarkerDatabase,
-    onEdit: () -> Unit,
     onDelete: () -> Unit
 ) {
     Column {

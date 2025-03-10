@@ -1,5 +1,5 @@
 [versions]
-agp = "8.8.1"
+agp = "8.8.2"
 coilCompose = "3.0.4"
 coreSplashscreen = "1.0.1"
 kotlin = "2.1.0"
@@ -8,15 +8,15 @@ junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
 lifecycleRuntimeKtx = "2.8.7"
-activityCompose = "1.10.0"
-composeBom = "2024.04.01"
-navigationCompose = "2.8.6"
+activityCompose = "1.10.1"
+composeBom = "2025.02.00"
+navigationCompose = "2.8.8"
 kotlinxSerializationJson = "1.7.3"
-playServicesLocationVersion = "21.0.1"
+playServicesLocationVersion = "21.3.0"
 roomRuntime = "2.6.1"
 mapsCompose = "6.4.1"
 googleAndroidLibrariesMapsplatformSecretsGradlePlugin = "2.0.1"
-navigationComposeVersion = "2.8.7"
+navigationComposeVersion = "2.8.8"
 playServicesLocation = "21.3.0"
 
 [libraries]
@@ -40,7 +40,6 @@ androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-man
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
 maps-compose = { module = "com.google.maps.android:maps-compose", version.ref = "mapsCompose" }
-androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
 navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationComposeVersion" }
 play-services-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "playServicesLocation" }
