@@ -26,11 +26,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
@@ -44,6 +48,7 @@ import com.google.maps.android.compose.rememberMarkerState
 import java.util.Locale
 
 
+@OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun Map(
     context: Context,
@@ -51,6 +56,14 @@ fun Map(
     paddingValues: PaddingValues,
     markerDatabase: MarkerDatabase
 ) {
+    val permissionState = rememberMultiplePermissionsState(
+        listOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
+    )
+
+    var isLocationEnabled by remember { mutableStateOf(false) }
+
+    var properties by remember { mutableStateOf(MapProperties(mapType = MapType.NORMAL, isMyLocationEnabled = isLocationEnabled)) }
+
     val uiSettings by remember { mutableStateOf(
         MapUiSettings(
             compassEnabled = true,
@@ -59,7 +72,7 @@ fun Map(
             myLocationButtonEnabled = true
         )
     ) }
-    var properties by remember { mutableStateOf(MapProperties(mapType = MapType.NORMAL, isMyLocationEnabled = false)) }
+
     var userLocation by remember {
         mutableStateOf(LatLng(10.0, 10.0))
     }
@@ -73,10 +86,13 @@ fun Map(
     val clickPosition = remember { mutableStateOf(LatLng(0.0, 0.0)) }
 
     getCurrentLocation(context, activity) { location ->
-        properties = MapProperties(mapType = MapType.NORMAL, isMyLocationEnabled = true)
         userLocation = location
         zoomLevel = cameraPositionState.position.zoom
         cameraPositionState.position = CameraPosition.fromLatLngZoom(location, zoomLevel)
+    }
+
+    if (permissionState.allPermissionsGranted) {
+        properties = MapProperties(mapType = MapType.NORMAL, isMyLocationEnabled = true)
     }
 
     if (showDialog.value) {

@@ -43,7 +43,7 @@ android {
 }
 
 dependencies {
-
+    implementation(libs.google.accompanist.permissions)
     implementation(libs.play.services.location.v2101)
     implementation(libs.androidx.core.splashscreen)
     implementation(libs.androidx.room.runtime)
